@@ -56,6 +56,10 @@ function MissionPage() {
                 {b.items.map((it, j) => <li key={j} className="brutal-border bg-card px-3 py-2 font-mono text-sm">▸ {it}</li>)}
               </ul>
             );
+            if (b.kind === "link") {
+              const href = b.to === "mission" ? `/mission/${b.slug}` : b.to === "device" ? `/device/${b.slug}` : `/glossary#${b.slug}`;
+              return <a key={i} href={href} className="brutal-border bg-volt text-bone inline-block px-3 py-2 font-mono text-xs uppercase brutal-press mr-2">→ {b.label}</a>;
+            }
             if (b.kind === "callout") {
               const c = b.tone === "tip" ? "bg-acid" : b.tone === "warn" ? "bg-hot text-bone" : "bg-volt text-bone";
               const tag = b.tone === "tip" ? "TIP" : b.tone === "warn" ? "WARN" : "KEY";
