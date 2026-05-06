@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DEVICES } from "@/content/devices";
 
-export const Route = createFileRoute("/devices")({
+export const Route = createFileRoute("/devices/")({
   head: () => ({ meta: [
     { title: "Device Lab — ABLETON.SCHOOL" },
     { name: "description", content: "Real, working device emulations. Hear what every parameter does." },
