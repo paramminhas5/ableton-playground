@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { deviceBySlug, DEVICES } from "@/content/devices";
 import { DeviceLab } from "@/components/DeviceLab";
+import { DeviceExplainers } from "@/components/DeviceExplainers";
+import { getDeviceExplainer } from "@/content/device-explainers";
 
 export const Route = createFileRoute("/device/$slug")({
   head: ({ params }) => {
@@ -52,6 +54,11 @@ function DevicePage() {
         listenFor={d.listenFor}
         signalFlow={d.signalFlow}
       />
+
+      {/* Deep Explanations */}
+      <div className="brutal-border bg-card p-6 space-y-4">
+        <DeviceExplainers blocks={getDeviceExplainer(slug)} />
+      </div>
 
       <div className="flex justify-between gap-3">
         {prev ? (
