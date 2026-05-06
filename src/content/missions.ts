@@ -182,23 +182,29 @@ const w2: Mission[] = [
     slug: "clips",
     world: "two-views",
     number: 8,
-    title: "Clips 101",
-    tagline: "MIDI clips & audio clips.",
-    xp: 60,
+    title: "Clips 101 — MIDI vs Audio",
+    tagline: "Two clip types. Wildly different powers.",
+    xp: 70,
     explainer: [
-      { kind: "lead", text: "A clip is a piece of musical content. MIDI clips contain notes; audio clips contain samples. Both can loop." },
+      { kind: "lead", text: "A clip is a piece of musical content that lives on a track. There are exactly two kinds, and the difference shapes everything you do in Live." },
+      { kind: "para", text: "A MIDI clip stores instructions: 'play C4 at velocity 100 for half a beat'. The track's instrument creates the actual sound at playback. You can change the instrument, transpose every note, slow it down, or rewrite the melody — all without losing fidelity, because nothing has been rendered yet." },
+      { kind: "para", text: "An audio clip stores a recorded waveform — a long list of amplitude samples (44,100 numbers per second at CD quality). The pitch and timing are baked into the file. You can still transpose, stretch and warp it, but those are processes that re-interpret the existing samples — push them too far and you'll hear artefacts." },
+      { kind: "callout", tone: "key", text: "Rule of thumb: write with MIDI, capture performance with audio. MIDI for ideas you'll keep changing; audio when the sound itself is the point (vocals, recorded instruments, sampled loops)." },
       { kind: "list", items: [
-        "Clip View shows clip properties: pitch, gain, loop, warp.",
-        "Notes panel for MIDI editing.",
-        "Sample panel for audio editing & warping.",
-        "Envelopes panel for automation inside the clip.",
+        "MIDI clip → notes + velocity + length, edited in the Piano Roll.",
+        "Audio clip → waveform + warp markers, edited in the Sample editor.",
+        "Both can loop, both can hold automation envelopes.",
+        "Drag audio to a MIDI track → Live wraps it in a Simpler so you can play it like an instrument.",
       ]},
+      { kind: "callout", tone: "tip", text: "In the simulator below: change the MIDI instrument and the same melody becomes a saw bass, a sine pad, or a square lead instantly. Try the same on the audio clip — you can only stretch and detune the recording you have." },
+      { kind: "link", to: "mission", slug: "midi-piano-roll", label: "Next up: edit MIDI in the Piano Roll" },
+      { kind: "link", to: "mission", slug: "warping", label: "Audio clips deep-dive: Warping" },
     ],
-    sim: { type: "piano-roll" },
+    sim: { type: "midi-vs-audio" },
     quiz: [
-      { q: "MIDI clips contain…", options: ["Audio", "Notes", "Both", "Plugins"], answer: 1 },
-      { q: "Clip-level automation lives in…", options: ["Notes", "Envelopes", "Sample", "Mixer"], answer: 1 },
-      { q: "Audio warping is set in the…", options: ["Notes panel", "Sample panel", "Mixer", "Browser"], answer: 1 },
+      { q: "MIDI clips contain…", options: ["Audio samples", "Note instructions (pitch, velocity, length)", "Both equally", "Plugin chains"], answer: 1, explain: "MIDI is a list of instructions; the instrument on the track turns it into sound." },
+      { q: "Why is MIDI editable forever?", options: ["It's compressed", "Nothing is rendered until playback", "It's smaller", "Live caches it"], answer: 1 },
+      { q: "Audio clip transpose is…", options: ["Free, lossless", "A re-pitch process — extreme values cause artefacts", "Impossible", "MIDI-only"], answer: 1 },
     ],
   },
   {
@@ -527,7 +533,7 @@ const w4: Mission[] = [
       ]},
       { kind: "callout", tone: "key", text: "Subtractive EQ before additive: cut what's wrong before boosting what's right." },
     ],
-    sim: { type: "ear-training", preset: { mode: "eq" } },
+    sim: { type: "device-lab", preset: { device: "eq" } },
     quiz: [
       { q: "EQ Eight has how many bands?", options: ["4", "6", "8", "10"], answer: 2 },
       { q: "Remove sub rumble with a…", options: ["High shelf", "Low shelf", "High-pass", "Notch"], answer: 2 },
@@ -553,7 +559,7 @@ const w4: Mission[] = [
       ]},
       { kind: "callout", tone: "tip", text: "Slower attack = more transient through. Faster attack = more squash." },
     ],
-    sim: { type: "ear-training", preset: { mode: "comp" } },
+    sim: { type: "device-lab", preset: { device: "compressor" } },
     quiz: [
       { q: "Slower attack lets through more…", options: ["Bass", "Transients", "Reverb", "Pitch"], answer: 1 },
       { q: "Ratio of 4:1 means…", options: ["4 dB in = 1 dB over", "1 dB in = 4 dB over", "No effect", "Limiter"], answer: 0 },
@@ -576,7 +582,7 @@ const w4: Mission[] = [
         "Always put reverb/delay on a Return for sharing across tracks.",
       ]},
     ],
-    sim: { type: "ear-training", preset: { mode: "reverb" } },
+    sim: { type: "device-lab", preset: { device: "reverb" } },
     quiz: [
       { q: "Hybrid Reverb arrived in…", options: ["Live 9", "Live 10", "Live 11", "Live 12"], answer: 2 },
       { q: "Reverbs are best placed on…", options: ["Each track", "Master", "Returns", "Group"], answer: 2 },
@@ -598,7 +604,7 @@ const w4: Mission[] = [
         "Roar adds multi-band processing & feedback paths.",
       ]},
     ],
-    sim: { type: "ear-training", preset: { mode: "sat" } },
+    sim: { type: "device-lab", preset: { device: "saturator" } },
     quiz: [
       { q: "Roar was added in…", options: ["Live 10", "Live 11", "Live 12", "Live 13"], answer: 2 },
       { q: "Drive in Saturator controls…", options: ["Pitch", "How hard you hit the curve", "Reverb size", "Pan"], answer: 1 },
@@ -786,7 +792,7 @@ const w5: Mission[] = [
         "Try fast attack, medium release for classic dance pump.",
       ]},
     ],
-    sim: { type: "ear-training", preset: { mode: "sidechain" } },
+    sim: { type: "device-lab", preset: { device: "compressor" } },
     quiz: [
       { q: "Sidechain ducks…", options: ["The kick", "The track being compressed", "The reverb", "Master"], answer: 1 },
       { q: "Classic pump uses…", options: ["Slow attack, slow release", "Fast attack, medium release", "No release", "Soft knee only"], answer: 1 },
@@ -1007,4 +1013,9 @@ export const missionBySlug = (slug: string) => MISSIONS.find((m) => m.slug === s
 export const nextMission = (slug: string) => {
   const i = MISSIONS.findIndex((m) => m.slug === slug);
   return i >= 0 && i < MISSIONS.length - 1 ? MISSIONS[i + 1] : null;
+};
+
+export const prevMission = (slug: string) => {
+  const i = MISSIONS.findIndex((m) => m.slug === slug);
+  return i > 0 ? MISSIONS[i - 1] : null;
 };

@@ -13,9 +13,11 @@ import { Route as WorldsRouteImport } from './routes/worlds'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PlaygroundRouteImport } from './routes/playground'
 import { Route as GlossaryRouteImport } from './routes/glossary'
+import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorldSlugRouteImport } from './routes/world.$slug'
 import { Route as MissionSlugRouteImport } from './routes/mission.$slug'
+import { Route as DeviceSlugRouteImport } from './routes/device.$slug'
 
 const WorldsRoute = WorldsRouteImport.update({
   id: '/worlds',
@@ -37,6 +39,11 @@ const GlossaryRoute = GlossaryRouteImport.update({
   path: '/glossary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevicesRoute = DevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -52,32 +59,43 @@ const MissionSlugRoute = MissionSlugRouteImport.update({
   path: '/mission/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DeviceSlugRoute = DeviceSlugRouteImport.update({
+  id: '/device/$slug',
+  path: '/device/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/devices': typeof DevicesRoute
   '/glossary': typeof GlossaryRoute
   '/playground': typeof PlaygroundRoute
   '/profile': typeof ProfileRoute
   '/worlds': typeof WorldsRoute
+  '/device/$slug': typeof DeviceSlugRoute
   '/mission/$slug': typeof MissionSlugRoute
   '/world/$slug': typeof WorldSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/devices': typeof DevicesRoute
   '/glossary': typeof GlossaryRoute
   '/playground': typeof PlaygroundRoute
   '/profile': typeof ProfileRoute
   '/worlds': typeof WorldsRoute
+  '/device/$slug': typeof DeviceSlugRoute
   '/mission/$slug': typeof MissionSlugRoute
   '/world/$slug': typeof WorldSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/devices': typeof DevicesRoute
   '/glossary': typeof GlossaryRoute
   '/playground': typeof PlaygroundRoute
   '/profile': typeof ProfileRoute
   '/worlds': typeof WorldsRoute
+  '/device/$slug': typeof DeviceSlugRoute
   '/mission/$slug': typeof MissionSlugRoute
   '/world/$slug': typeof WorldSlugRoute
 }
@@ -85,38 +103,46 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/devices'
     | '/glossary'
     | '/playground'
     | '/profile'
     | '/worlds'
+    | '/device/$slug'
     | '/mission/$slug'
     | '/world/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/devices'
     | '/glossary'
     | '/playground'
     | '/profile'
     | '/worlds'
+    | '/device/$slug'
     | '/mission/$slug'
     | '/world/$slug'
   id:
     | '__root__'
     | '/'
+    | '/devices'
     | '/glossary'
     | '/playground'
     | '/profile'
     | '/worlds'
+    | '/device/$slug'
     | '/mission/$slug'
     | '/world/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DevicesRoute: typeof DevicesRoute
   GlossaryRoute: typeof GlossaryRoute
   PlaygroundRoute: typeof PlaygroundRoute
   ProfileRoute: typeof ProfileRoute
   WorldsRoute: typeof WorldsRoute
+  DeviceSlugRoute: typeof DeviceSlugRoute
   MissionSlugRoute: typeof MissionSlugRoute
   WorldSlugRoute: typeof WorldSlugRoute
 }
@@ -151,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlossaryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/devices': {
+      id: '/devices'
+      path: '/devices'
+      fullPath: '/devices'
+      preLoaderRoute: typeof DevicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -172,15 +205,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MissionSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/device/$slug': {
+      id: '/device/$slug'
+      path: '/device/$slug'
+      fullPath: '/device/$slug'
+      preLoaderRoute: typeof DeviceSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DevicesRoute: DevicesRoute,
   GlossaryRoute: GlossaryRoute,
   PlaygroundRoute: PlaygroundRoute,
   ProfileRoute: ProfileRoute,
   WorldsRoute: WorldsRoute,
+  DeviceSlugRoute: DeviceSlugRoute,
   MissionSlugRoute: MissionSlugRoute,
   WorldSlugRoute: WorldSlugRoute,
 }

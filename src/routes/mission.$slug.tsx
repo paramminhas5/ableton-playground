@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { missionBySlug, nextMission } from "@/content/missions";
+import { missionBySlug, nextMission, prevMission, MISSIONS } from "@/content/missions";
 import { WORLDS } from "@/content/worlds";
 import { Simulator } from "@/components/sims/Simulator";
 import { Quiz } from "@/components/Quiz";
+import { JourneyMap } from "@/components/JourneyMap";
 import { useProgress } from "@/lib/progress";
 import { useState } from "react";
 
@@ -23,6 +24,8 @@ function MissionPage() {
   const { progress, completeMission } = useProgress();
   const [completed, setCompleted] = useState(!!progress.completedMissions[slug]);
   const next = nextMission(slug);
+  const prev = prevMission(slug);
+  const totalDone = Object.keys(progress.completedMissions).length;
   const colorClass = { acid: "bg-acid", hot: "bg-hot text-bone", volt: "bg-volt text-bone", sun: "bg-sun", bone: "bg-bone", ink: "bg-ink text-bone" }[w.color];
 
   const onQuizDone = (score: number) => {
@@ -33,6 +36,17 @@ function MissionPage() {
   return (
     <div className="max-w-5xl mx-auto p-6 md:p-12 space-y-8">
       <Link to="/world/$slug" params={{ slug: m.world }} className="font-mono text-xs uppercase underline">← {w.title}</Link>
+
+      <Link to="/world/$slug" params={{ slug: m.world }} className="font-mono text-xs uppercase underline">← {w.title}</Link>
+
+      <JourneyMap currentSlug={slug} />
+
+      <div className="font-mono text-xs uppercase opacity-70">Mission {m.number} of {MISSIONS.length} · {Math.round(totalDone/MISSIONS.length*100)}% course complete · ~6 min</div>
+
+      <div className="flex justify-between gap-2 font-mono text-xs uppercase">
+        {prev ? <Link to="/mission/$slug" params={{ slug: prev.slug }} className="brutal-border bg-bone px-3 py-2 brutal-press">← {prev.title}</Link> : <span/>}
+        {next ? <Link to="/mission/$slug" params={{ slug: next.slug }} className="brutal-border bg-acid px-3 py-2 brutal-press">{next.title} →</Link> : <span/>}
+      </div>
 
       <header className={`${colorClass} brutal-border p-6 brutal-shadow`}>
         <div className="font-mono text-xs uppercase">Mission {String(m.number).padStart(2, "0")} · World {w.number}</div>
@@ -56,6 +70,10 @@ function MissionPage() {
                 {b.items.map((it, j) => <li key={j} className="brutal-border bg-card px-3 py-2 font-mono text-sm">▸ {it}</li>)}
               </ul>
             );
+            if (b.kind === "link") {
+              const href = b.to === "mission" ? `/mission/${b.slug}` : b.to === "device" ? `/device/${b.slug}` : `/glossary#${b.slug}`;
+              return <a key={i} href={href} className="brutal-border bg-volt text-bone inline-block px-3 py-2 font-mono text-xs uppercase brutal-press mr-2">→ {b.label}</a>;
+            }
             if (b.kind === "callout") {
               const c = b.tone === "tip" ? "bg-acid" : b.tone === "warn" ? "bg-hot text-bone" : "bg-volt text-bone";
               const tag = b.tone === "tip" ? "TIP" : b.tone === "warn" ? "WARN" : "KEY";

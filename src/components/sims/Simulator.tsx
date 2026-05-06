@@ -12,6 +12,8 @@ import { MidiMapSim } from "./MidiMapSim";
 import { EarTrainingSim } from "./EarTrainingSim";
 import { InterfaceTourSim } from "./InterfaceTourSim";
 import { BrowserTourSim } from "./BrowserTourSim";
+import { MidiVsAudioSim } from "./MidiVsAudioSim";
+import { DeviceLabBySlug } from "./DeviceLabBySlug";
 
 export function Simulator({ type, preset }: { type: SimType; preset?: Record<string, unknown> }) {
   switch (type) {
@@ -28,6 +30,8 @@ export function Simulator({ type, preset }: { type: SimType; preset?: Record<str
     case "ear-training": return <EarTrainingSim preset={preset} />;
     case "interface-tour": return <InterfaceTourSim />;
     case "browser-tour": return <BrowserTourSim />;
+    case "midi-vs-audio": return <MidiVsAudioSim />;
+    case "device-lab": return <DeviceLabBySlug slug={(preset?.device as string) || "eq"} />;
     default: return <div className="brutal-border bg-bone p-6 font-mono text-xs uppercase">No simulator for this mission — read & quiz only.</div>;
   }
 }

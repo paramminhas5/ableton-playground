@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { WORLDS } from "@/content/worlds";
 import { MISSIONS } from "@/content/missions";
+import { JourneyMap } from "@/components/JourneyMap";
 import { useProgress } from "@/lib/progress";
 
 export const Route = createFileRoute("/")({
@@ -26,6 +27,7 @@ function Home() {
             <div className="flex flex-wrap gap-3 mt-6">
               <Link to="/mission/$slug" params={{ slug: "what-is-live" }} className="brutal-border bg-ink text-bone px-5 py-3 font-display text-xl brutal-press brutal-shadow">▶ START MISSION 01</Link>
               <Link to="/worlds" className="brutal-border bg-bone px-5 py-3 font-display text-xl brutal-press">ALL WORLDS</Link>
+              <Link to="/devices" className="brutal-border bg-volt text-bone px-5 py-3 font-display text-xl brutal-press">DEVICE LAB</Link>
               <Link to="/playground" className="brutal-border bg-hot text-bone px-5 py-3 font-display text-xl brutal-press">PLAYGROUND</Link>
             </div>
           </div>
@@ -44,8 +46,9 @@ function Home() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto p-6 md:p-12">
-        <h2 className="text-4xl md:text-6xl mb-6">// SIX WORLDS</h2>
+      <section className="max-w-7xl mx-auto p-6 md:p-12 space-y-6">
+        <JourneyMap />
+        <h2 className="text-4xl md:text-6xl">// SIX WORLDS</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {WORLDS.map((w) => {
             const total = MISSIONS.filter((m) => m.world === w.slug).length;

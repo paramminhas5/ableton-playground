@@ -24,6 +24,9 @@ export function Quiz({ qs, onComplete }: { qs: QuizQ[]; onComplete: (score: numb
               );
             })}
           </div>
+          {submitted && q.explain && (
+            <div className="brutal-border bg-volt text-bone p-2 mt-2 font-mono text-xs">▸ {q.explain}</div>
+          )}
         </div>
       ))}
       {!submitted ? (
