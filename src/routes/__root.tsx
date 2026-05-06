@@ -12,7 +12,6 @@ import appCss from "../styles.css?url";
 
 import { Header } from "@/components/Header";
 import { TransportProvider } from "@/components/TransportProvider";
-import { MasterTransportBar } from "@/components/MasterTransportBar";
 
 function NotFoundComponent() {
   return (
@@ -120,7 +119,6 @@ function RootComponent() {
           <footer className="brutal-border border-x-0 border-b-0 bg-ink text-bone p-6 font-mono text-xs uppercase tracking-widest">
             ABLETON.SCHOOL — UNOFFICIAL · BUILT FOR THE GRID · 2026
           </footer>
-          <MasterTransportBar />
         </div>
       </QueryClientProvider>
     </TransportProvider>
