@@ -4,7 +4,7 @@ import type { QuizQ } from "@/content/types";
 export function Quiz({ qs, onComplete }: { qs: QuizQ[]; onComplete: (score: number) => void }) {
   const [answers, setAnswers] = useState<(number | null)[]>(qs.map(() => null));
   const [submitted, setSubmitted] = useState(false);
-  const score = answers.reduce((s, a, i) => s + (a === qs[i].answer ? 1 : 0), 0);
+  const score = answers.reduce<number>((s, a, i) => s + (a === qs[i].answer ? 1 : 0), 0);
   return (
     <div className="space-y-4">
       {qs.map((q, i) => (
