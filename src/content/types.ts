@@ -14,6 +14,8 @@ export type SimType =
   | "ear-training"
   | "interface-tour"
   | "browser-tour"
+  | "midi-vs-audio"
+  | "device-lab"
   | "none";
 
 export type QuizQ = {
@@ -28,7 +30,8 @@ export type ExplainerBlock =
   | { kind: "para"; text: string }
   | { kind: "callout"; tone: "tip" | "warn" | "key"; text: string }
   | { kind: "list"; items: string[] }
-  | { kind: "diagram"; id: string; caption?: string };
+  | { kind: "diagram"; id: string; caption?: string }
+  | { kind: "link"; to: "mission" | "device" | "glossary"; slug: string; label: string };
 
 export type Mission = {
   slug: string;
