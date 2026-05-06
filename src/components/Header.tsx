@@ -11,9 +11,10 @@ export function Header() {
         </Link>
         <nav className="flex-1 flex items-stretch font-mono uppercase text-sm">
           <Link to="/worlds" className="px-4 flex items-center brutal-border border-y-0 border-l-0 hover:bg-acid">Worlds</Link>
+          <Link to="/devices" className="px-4 flex items-center brutal-border border-y-0 border-l-0 hover:bg-volt hover:text-bone">Devices</Link>
           <Link to="/playground" className="px-4 flex items-center brutal-border border-y-0 border-l-0 hover:bg-hot hover:text-bone">Playground</Link>
-          <Link to="/glossary" className="px-4 flex items-center brutal-border border-y-0 border-l-0 hover:bg-volt hover:text-bone">Glossary</Link>
-          <Link to="/profile" className="px-4 flex items-center brutal-border border-y-0 border-l-0 hover:bg-sun">Profile</Link>
+          <Link to="/glossary" className="px-4 flex items-center brutal-border border-y-0 border-l-0 hover:bg-sun">Glossary</Link>
+          <Link to="/profile" className="px-4 flex items-center brutal-border border-y-0 border-l-0 hover:bg-acid">Profile</Link>
         </nav>
         <div className="flex items-center gap-2 px-4 font-mono text-sm">
           <span className="brutal-border bg-acid px-2 py-1">XP {progress.xp}</span>
