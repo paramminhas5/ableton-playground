@@ -11,6 +11,8 @@ import {
 import appCss from "../styles.css?url";
 
 import { Header } from "@/components/Header";
+import { TransportProvider } from "@/components/TransportProvider";
+import { MasterTransportBar } from "@/components/MasterTransportBar";
 
 function NotFoundComponent() {
   return (
@@ -106,14 +108,17 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen flex flex-col bg-bone text-ink">
-        <Header />
-        <main className="flex-1"><Outlet /></main>
-        <footer className="brutal-border border-x-0 border-b-0 bg-ink text-bone p-6 font-mono text-xs uppercase tracking-widest">
-          ABLETON.SCHOOL — UNOFFICIAL · BUILT FOR THE GRID · 2026
-        </footer>
-      </div>
-    </QueryClientProvider>
+    <TransportProvider>
+      <QueryClientProvider client={queryClient}>
+        <div className="min-h-screen flex flex-col bg-bone text-ink pb-24">
+          <Header />
+          <main className="flex-1"><Outlet /></main>
+          <footer className="brutal-border border-x-0 border-b-0 bg-ink text-bone p-6 font-mono text-xs uppercase tracking-widest">
+            ABLETON.SCHOOL — UNOFFICIAL · BUILT FOR THE GRID · 2026
+          </footer>
+          <MasterTransportBar />
+        </div>
+      </QueryClientProvider>
+    </TransportProvider>
   );
 }
