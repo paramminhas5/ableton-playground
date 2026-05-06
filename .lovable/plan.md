@@ -1,104 +1,128 @@
+# V2: From Demo to Production-Grade Learning Platform
 
-# ABLETON.SCHOOL — Brutalist Interactive Learn-Ableton
+You flagged the right things — current build is a skeleton. Explainers are too thin, sims don't make sound, devices don't actually do anything, and there's no felt sense of journey. This pass turns it into a serious, audio-first learning platform while keeping the brutalist look.
 
-A full-coverage, gamified web companion to the Ableton Live 12 manual. Catscandance-flavored brutalism: black/white base, loud swatches (acid green, hot pink, electric blue), oversized mono type, raw borders, glitchy motion. Every chapter of the manual becomes a "Mission" with explainers, simulators, and a quiz.
+---
 
-## What gets built (v1)
+## 1. Journey & Timeline
 
-A site with a left brutalist sidebar of all manual chapters grouped into 6 "Worlds", a home/overview page, a per-mission interactive lesson template, a sandbox playground, and an XP/profile system. Optional Lovable Cloud login syncs progress; otherwise localStorage.
+A real path through the course, not just a grid.
 
-### Worlds & missions (mirrors the manual)
+- **New `JourneyMap` component** on the home page and `/worlds`: a horizontal/vertical brutalist "subway map" showing all 6 worlds and ~60 missions as connected stops. Completed = filled, current = pulsing, locked = hatched.
+- **Mission breadcrumb header**: `World 3 · Mission 14 of 60 · 23% complete · ~6 min` on every mission page.
+- **Prev / Next rail** at top and bottom of every mission with mission titles, not just arrows.
+- **Time estimates** per mission (read + play + quiz) and per world.
+- **Per-world progress ring** + cumulative XP-to-next-level bar in the header.
+- **"Resume where you left off"** CTA on home, plus a `Continue` shortcut in the header marquee.
 
-1. **World 1 — First Contact**: What is Live, Interface tour, Browser, Preferences, File management.
-2. **World 2 — The Two Views**: Session View, Arrangement View, Clip basics, Tracks, Scenes, Follow Actions.
-3. **World 3 — MIDI & Audio**: MIDI clips & piano roll, Audio clips, Warping, Comping, Slicing, Recording.
-4. **World 4 — Devices & Sound Design**: Instruments (Operator, Wavetable, Drift, Sampler, Drum Rack, Meld), Audio effects (EQ, Compressor, Reverb, Delay, Saturator, Hybrid Reverb, Spectral tools), MIDI effects, Racks & Macros.
-5. **World 5 — Mixing, Routing, Automation**: Mixer, Sends/Returns, Groups, Routing, Automation & Modulation, Sidechaining, Max for Live overview.
-6. **World 6 — Performance & Beyond**: Push/controllers, MIDI mapping, Tempo Following, CV tools, Link, Exporting, Live sets & projects, Troubleshooting.
+---
 
-Each manual chapter = one Mission card. ~60 missions total, generated from one reusable lesson template so scope stays controllable.
+## 2. Audio Everywhere
 
-### Mission anatomy (one template, content varies)
+Every interactive demo gets real, comparable sound built on the existing Web Audio engine — no asset files, all synthesised, instant.
 
-```text
-[ HEADER: world tag + mission # + title + XP reward ]
-[ SCROLL EXPLAINER: animated diagrams, hotspots, captions ]
-[ SIMULATOR: the interactive toy for this concept ]
-[ QUIZ: 3–5 questions, instant feedback ]
-[ COMPLETE → grants XP, badge, unlocks next mission ]
-```
+New shared primitives (`src/lib/audio.ts` extension):
+- `playSample(name)` — synthesised loops: `drum-loop`, `bass-loop`, `chord-pad`, `vox-chop`, `full-mix`.
+- `AudioBus` class: chainable nodes (EQ, Comp, Reverb, Delay, Saturator, Filter, Chorus, Phaser) with bypass + wet/dry, so any sim can route a source through real DSP.
+- `useTransport()` hook: shared play/stop/BPM, a global transport bar pinned to the bottom on simulator pages.
+- **A/B compare button** on every device sim: hold to bypass, release to engage — instant before/after.
+- **Spectrum + level meter** component (bar-style, not FFT noise) reused across sims.
 
-### Interactive simulators (reused across missions)
+---
 
-A small library of fake-Ableton mini-apps powered by the Web Audio API:
+## 3. Real Device Lab (replaces toy DeviceChainSim)
 
-- **Drum Pad / Drum Rack**: 4×4 pads, sample triggers, step sequencer toy.
-- **Piano Roll**: click-to-place MIDI notes, playback, velocity, quantize challenge.
-- **Mixer**: faders, pan, mute/solo, meters; gamified "match the target mix" levels.
-- **Warp Lab**: drag warp markers on a waveform to lock a loop to grid.
-- **Device Chain Builder**: drag EQ/Compressor/Reverb/Delay onto a track; toggle bypass; hear A/B.
-- **Knob Trainer**: turn macros to hit a target sound (frequency-match, attack/release race).
-- **Session Grid**: launch clips into scenes, learn quantization & follow actions.
-- **Arrangement Timeline**: drag clips on a timeline, draw automation lanes.
-- **Routing Puzzle**: connect tracks via sends/returns to solve a signal-flow puzzle.
-- **MIDI Mapping Range**: map a "knob" to a parameter, set min/max.
-- **Ear Training**: identify EQ cuts, compression amounts, reverb sizes (gamified).
+A dedicated `/devices` route + per-device deep-dive pages. Each device is a real working processor on a looping source you choose (drums / bass / chord / vox / full mix).
 
-Each simulator is a self-contained React component reused by multiple missions with different presets/targets.
+Devices covered with working DSP:
+1. **EQ Eight** — 8 draggable bands on a frequency response curve, hear cuts/boosts live.
+2. **Compressor** — threshold/ratio/attack/release/knee with gain-reduction meter and waveform before/after.
+3. **Saturator** — drive + waveshape select (soft/hard/tube/digital) with visible transfer curve and audible grit (fixes the "saturator does nothing" bug — currently it has no audio node at all).
+4. **Reverb (Hybrid-style)** — size, decay, predelay, wet/dry on a convolution-ish impulse.
+5. **Delay** — time (ms or sync), feedback, ping-pong, filter.
+6. **Auto Filter** — cutoff, resonance, LFO rate/depth, envelope follow.
+7. **Chorus / Phaser / Flanger** — rate, depth, feedback.
+8. **Glue Compressor** — bus compression on the full mix.
+9. **Operator (FM mini)** — 2-op FM with ratio + mod index.
+10. **Wavetable (mini)** — wavetable position, filter, amp env.
 
-### Gamification
+Each device page has: animated signal-flow diagram, parameter cards explaining *what each knob actually does to the sound*, A/B button, preset chips ("subtle", "extreme", "broken"), and a "what to listen for" checklist.
 
-- XP per mission + bonus for quiz perfect score and simulator targets.
-- Badges (e.g. "Warp Wizard", "Sidechain Sniper", "Macro Maxxer").
-- Daily streak counter.
-- Per-world progress bar; unlock next world at 80% completion.
-- Global leaderboard (only when logged in).
-- Profile page with badges, XP, completion %, current streak.
+Device chain builder gets rebuilt on top of these real nodes — chain order actually changes the sound.
 
-### Pages / routes
+---
 
-```text
-/                  Home — manifesto, "Start Mission 1", world grid
-/worlds            All 6 worlds overview
-/world/$slug       World page: list of missions, progress
-/mission/$slug     Mission lesson (uses template)
-/playground       Free-play sandbox: pick any simulator
-/glossary         A–Z brutalist glossary of every Ableton term
-/profile          XP, badges, streak, completed missions
-/leaderboard      Top learners (login required)
-/login, /signup   Optional Lovable Cloud auth
-```
+## 4. Deeper Explainers (the big content pass)
 
-### Visual system
+Every mission's `explainer` array gets expanded from ~3 blocks to 8–15 blocks, with this required structure:
 
-- Palette: `#000`, `#F5F1E8` off-white, `#C6FF00` acid green (primary), `#FF2E88` hot pink, `#2962FF` electric blue. Black borders 2–4px everywhere.
-- Type: oversized mono headlines (e.g. JetBrains Mono / Space Mono), tight tracking, ALL CAPS labels; body in clean grotesk.
-- Motion: marquee tickers, hard cuts, glitch hover, no soft fades; cursor changes to crosshair over interactive zones.
-- Layout: hard-edged grid, asymmetric blocks, swatch-color backgrounds for each world.
+1. **Why this matters** (lead)
+2. **The concept** (2–3 paragraphs)
+3. **How it works under the hood** (key callout)
+4. **Concrete examples** with audio playback buttons inline
+5. **Where you'll see it in Live** (with annotated diagram)
+6. **Common mistakes** (warn callout)
+7. **Pro workflow tip** (tip callout)
+8. **Connections** — explicit "this links to: [Mission X], [Mission Y]" cross-references rendered as clickable chips. New `explainer` block kind: `link`.
 
-### Data model (Lovable Cloud, optional login)
+Specific fixes you called out:
+- **Mission "Clip 101 / MIDI vs Audio"**: rebuilt sim — side-by-side MIDI clip (notes you can edit, re-pitch instantly, change instrument) vs Audio clip (waveform, warp markers, pitch shift artifacts) playing the *same melody* so the difference is audible. Explainer goes from 4 lines to a full breakdown of sample rate, bit depth, MIDI messages, why MIDI is editable and audio isn't, and when to use each.
+- **Arrangement view**: now plays a real 16-bar arrangement with the four tracks (drums/bass/synth/vox) you can mute/solo, scrub, and loop. Automation lane actually controls volume on playback.
+- **Every quiz question**: pre-quiz "recap card" summarising the answer's concept so questions are never asked about something not explained. Wrong answers show the explanation inline, not just "incorrect".
 
-- `profiles` — user, display name, xp, streak.
-- `mission_progress` — user_id, mission_slug, status, score, completed_at.
-- `badges_earned` — user_id, badge_slug, earned_at.
-- `user_roles` table per security best-practice (admin badge mgmt later).
-- RLS on all; anonymous users use localStorage with a "sync to account" CTA.
+---
 
-### Technical notes
+## 5. Glossary → Knowledge Base
 
-- TanStack Start file routes; one mission template route `/mission/$slug` with content driven by a typed mission registry (TS file per world).
-- Web Audio API for all sound; small WAV/MP3 samples in `public/audio/`.
-- All simulators are framework-agnostic React components in `src/components/sims/`.
-- Manual content distilled into JSON: `src/content/missions/*.ts` — title, summary, explainer blocks, sim preset, quiz questions, XP, badges. I'll seed the full ~60 missions from the uploaded PDF.
-- Optional auth via Lovable Cloud; same UI works signed-out via local progress store.
+Current 50 terms is a stub. Rebuilt as a real reference:
+- **150+ terms** covering every concept from the manual (warping algorithms, every device, every view, every workflow, MIDI spec terms, audio terms, performance terms, M4L, CV, Push, file types, etc.).
+- **Categories + filter chips**: Devices, Workflow, Audio Theory, MIDI, Performance, File System, Shortcuts.
+- **Search bar** with instant fuzzy filter.
+- **Each term card**: definition, "see also" links, link to the mission(s) that teach it, optional mini audio example or diagram.
+- **Keyboard shortcut trainer**: dedicated section with flashcard mode (shows action, you press the key, it validates).
 
-### Build phases (each shippable)
+---
 
-1. **Foundations**: routing, brutalist design system, sidebar, home, world grid, mission template shell, local progress store.
-2. **Core simulators**: Drum Pad, Piano Roll, Mixer, Device Chain, Warp Lab + Web Audio engine.
-3. **World 1–3 missions**: ~25 missions wired with explainers, sims, quizzes, XP/badges.
-4. **World 4–6 missions + remaining sims**: Routing Puzzle, Ear Training, Knob Trainer, MIDI Map, Arrangement.
-5. **Cloud + profile + leaderboard**: optional login, sync, badges page.
-6. **Polish**: glossary, playground, motion pass, audio QA, accessibility.
+## 6. Signal Flow Visualizer
 
-We'll do phase 1 first after you approve, then iterate.
+New `/signal-flow` route plus embedded diagrams in routing/mixing missions:
+- SVG diagrams for: track signal path, send/return, sidechain, group bus, external routing, resampling, MIDI → instrument → audio.
+- Hover any node → highlights the path, shows a tooltip with the explanation.
+- Click → opens a side panel with the full breakdown and a "play this routing" button.
+
+---
+
+## 7. Interactive Challenges Layer
+
+On top of the existing quiz: each mission gets 1 mini-challenge with visual validation.
+Examples: "Make this drum loop pump — set sidechain compressor threshold below -12dB", "EQ out the boomy 200Hz", "Warp this clip so the transient lands on beat 1". Pass = checkmark + bonus XP. Fail = inline hint.
+
+---
+
+## 8. Polish
+
+- Dark/light brutalist toggle (stays brutalist either way).
+- Smooth keyframe animations on transitions, mission complete celebration.
+- Keyboard nav across mission pages (J/K next/prev, space to play, A/B for compare).
+- Mobile audio unlock prompt; transport bar collapses to a sticky button on mobile.
+- Accessibility pass: focus rings, aria labels on all sim controls, contrast check on every color combo.
+
+---
+
+## Build phases (each shippable)
+
+1. **Audio engine + transport bar + A/B + sample loops** (foundation everything else depends on).
+2. **Real Device Lab** (10 devices working with audio) + rebuilt device-chain sim.
+3. **Content pass**: expand all 42 missions' explainers, add `link` cross-refs, fix Clip 101 + Arrangement sims, add per-mission challenges.
+4. **Journey map + breadcrumb + prev/next rail + time estimates**.
+5. **Knowledge Base rebuild** (150+ terms, search, filter, shortcut trainer) + Signal Flow visualizer route.
+6. **Polish**: theme toggle, animations, keyboard nav, accessibility, mobile transport.
+
+## Technical notes
+
+- All audio synthesised via Web Audio — no asset downloads, works offline, instant.
+- New files: `src/lib/audio-bus.ts`, `src/lib/transport.ts`, `src/components/Transport.tsx`, `src/components/JourneyMap.tsx`, `src/components/SpectrumMeter.tsx`, `src/components/sims/devices/*` (one per device), `src/routes/devices.tsx`, `src/routes/devices.$slug.tsx`, `src/routes/signal-flow.tsx`, expanded `src/content/glossary.ts`.
+- Existing simulators kept and upgraded, not replaced — progress survives.
+- No new dependencies required.
+
+Approve and I'll start with phase 1 (audio engine + transport) so the rest has something to plug into.
