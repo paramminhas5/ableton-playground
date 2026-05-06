@@ -13,8 +13,8 @@ import { Route as WorldsRouteImport } from './routes/worlds'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PlaygroundRouteImport } from './routes/playground'
 import { Route as GlossaryRouteImport } from './routes/glossary'
+import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DevicesIndexRouteImport } from './routes/devices.index'
 import { Route as WorldSlugRouteImport } from './routes/world.$slug'
 import { Route as MissionSlugRouteImport } from './routes/mission.$slug'
 import { Route as DevicesSlugRouteImport } from './routes/devices.$slug'
@@ -39,14 +39,14 @@ const GlossaryRoute = GlossaryRouteImport.update({
   path: '/glossary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevicesRoute = DevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevicesIndexRoute = DevicesIndexRouteImport.update({
-  id: '/devices/',
-  path: '/devices/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorldSlugRoute = WorldSlugRouteImport.update({
@@ -67,6 +67,7 @@ const DevicesSlugRoute = DevicesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/devices': typeof DevicesRouteWithChildren
   '/glossary': typeof GlossaryRoute
   '/playground': typeof PlaygroundRoute
   '/profile': typeof ProfileRoute
@@ -74,10 +75,10 @@ export interface FileRoutesByFullPath {
   '/devices/$slug': typeof DevicesSlugRoute
   '/mission/$slug': typeof MissionSlugRoute
   '/world/$slug': typeof WorldSlugRoute
-  '/devices/': typeof DevicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/devices': typeof DevicesRouteWithChildren
   '/glossary': typeof GlossaryRoute
   '/playground': typeof PlaygroundRoute
   '/profile': typeof ProfileRoute
@@ -85,11 +86,11 @@ export interface FileRoutesByTo {
   '/devices/$slug': typeof DevicesSlugRoute
   '/mission/$slug': typeof MissionSlugRoute
   '/world/$slug': typeof WorldSlugRoute
-  '/devices': typeof DevicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/devices': typeof DevicesRouteWithChildren
   '/glossary': typeof GlossaryRoute
   '/playground': typeof PlaygroundRoute
   '/profile': typeof ProfileRoute
@@ -97,12 +98,12 @@ export interface FileRoutesById {
   '/devices/$slug': typeof DevicesSlugRoute
   '/mission/$slug': typeof MissionSlugRoute
   '/world/$slug': typeof WorldSlugRoute
-  '/devices/': typeof DevicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/devices'
     | '/glossary'
     | '/playground'
     | '/profile'
@@ -110,10 +111,10 @@ export interface FileRouteTypes {
     | '/devices/$slug'
     | '/mission/$slug'
     | '/world/$slug'
-    | '/devices/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/devices'
     | '/glossary'
     | '/playground'
     | '/profile'
@@ -121,10 +122,10 @@ export interface FileRouteTypes {
     | '/devices/$slug'
     | '/mission/$slug'
     | '/world/$slug'
-    | '/devices'
   id:
     | '__root__'
     | '/'
+    | '/devices'
     | '/glossary'
     | '/playground'
     | '/profile'
@@ -132,18 +133,17 @@ export interface FileRouteTypes {
     | '/devices/$slug'
     | '/mission/$slug'
     | '/world/$slug'
-    | '/devices/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DevicesRoute: typeof DevicesRouteWithChildren
   GlossaryRoute: typeof GlossaryRoute
   PlaygroundRoute: typeof PlaygroundRoute
   ProfileRoute: typeof ProfileRoute
   WorldsRoute: typeof WorldsRoute
   MissionSlugRoute: typeof MissionSlugRoute
   WorldSlugRoute: typeof WorldSlugRoute
-  DevicesIndexRoute: typeof DevicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -176,18 +176,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlossaryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/devices': {
+      id: '/devices'
+      path: '/devices'
+      fullPath: '/devices'
+      preLoaderRoute: typeof DevicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/devices/': {
-      id: '/devices/'
-      path: '/devices'
-      fullPath: '/devices/'
-      preLoaderRoute: typeof DevicesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/world/$slug': {
@@ -214,15 +214,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface DevicesRouteChildren {
+  DevicesSlugRoute: typeof DevicesSlugRoute
+}
+
+const DevicesRouteChildren: DevicesRouteChildren = {
+  DevicesSlugRoute: DevicesSlugRoute,
+}
+
+const DevicesRouteWithChildren =
+  DevicesRoute._addFileChildren(DevicesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DevicesRoute: DevicesRouteWithChildren,
   GlossaryRoute: GlossaryRoute,
   PlaygroundRoute: PlaygroundRoute,
   ProfileRoute: ProfileRoute,
   WorldsRoute: WorldsRoute,
   MissionSlugRoute: MissionSlugRoute,
   WorldSlugRoute: WorldSlugRoute,
-  DevicesIndexRoute: DevicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
