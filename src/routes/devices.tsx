@@ -19,7 +19,7 @@ function DevicesIndex() {
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {DEVICES.map((d) => (
-          <Link key={d.slug} to="/devices/$slug" params={{ slug: d.slug }}
+          <Link key={d.slug} to="/device/$slug" params={{ slug: d.slug }}
             className="brutal-border bg-card p-5 brutal-shadow-sm brutal-press block">
             <div className="font-mono text-xs uppercase">{d.category}</div>
             <div className="font-display text-2xl mt-1">{d.name}</div>

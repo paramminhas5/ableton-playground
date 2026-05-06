@@ -55,10 +55,10 @@ function DevicePage() {
 
       <div className="flex justify-between gap-3">
         {prev ? (
-          <Link to="/devices/$slug" params={{ slug: prev.slug }} className="brutal-border bg-bone px-4 py-3 font-mono uppercase brutal-press">← {prev.name}</Link>
+          <Link to="/device/$slug" params={{ slug: prev.slug }} className="brutal-border bg-bone px-4 py-3 font-mono uppercase brutal-press">← {prev.name}</Link>
         ) : <span />}
         {next ? (
-          <Link to="/devices/$slug" params={{ slug: next.slug }} className="brutal-border bg-acid px-4 py-3 font-mono uppercase brutal-press">{next.name} →</Link>
+          <Link to="/device/$slug" params={{ slug: next.slug }} className="brutal-border bg-acid px-4 py-3 font-mono uppercase brutal-press">{next.name} →</Link>
         ) : <span />}
       </div>
     </div>
