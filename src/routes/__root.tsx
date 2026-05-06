@@ -72,10 +72,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "ABLETON.SCHOOL — Learn Ableton Live 12, Brutally Interactive" },
       { name: "description", content: "A gamified, interactive learning system for Ableton Live 12. Missions, simulators, XP. Cover the entire manual." },
       { name: "author", content: "ABLETON.SCHOOL" },
-      { property: "og:title", content: "ABLETON.SCHOOL" },
-      { property: "og:description", content: "Learn Ableton Live 12 through interactive missions and simulators." },
+      { property: "og:title", content: "ABLETON.SCHOOL — Learn Ableton Live 12, Brutally Interactive" },
+      { property: "og:description", content: "A gamified, interactive learning system for Ableton Live 12. Missions, simulators, XP. Cover the entire manual." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "ABLETON.SCHOOL — Learn Ableton Live 12, Brutally Interactive" },
+      { name: "twitter:description", content: "A gamified, interactive learning system for Ableton Live 12. Missions, simulators, XP. Cover the entire manual." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/36c251f6-dcf3-4d71-8feb-9486d60a9b48/id-preview-3fd21138--b41bf56a-3ebc-494a-8921-6121016e05ad.lovable.app-1778104020962.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/36c251f6-dcf3-4d71-8feb-9486d60a9b48/id-preview-3fd21138--b41bf56a-3ebc-494a-8921-6121016e05ad.lovable.app-1778104020962.png" },
     ],
     links: [
       {
