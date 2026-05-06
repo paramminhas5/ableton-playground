@@ -107,6 +107,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Audio Theory',
     definition: 'A logarithmic unit measuring loudness or signal level.',
     explanation: '0 dB = reference level. +6 dB = 2x louder. -6 dB = half as loud. Logarithmic: 20 dB ≠ 2x louder than 10 dB.',
+    seeAlso: ['Frequency', 'Amplitude', 'Peak Meter'],
     formula: 'dB = 20 × log₁₀(Amplitude)'
   },
   {
@@ -242,6 +243,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Workflow',
     definition: 'Setting proper levels at each stage of the signal chain to optimize headroom and minimize noise.',
     explanation: 'Peak levels should be around -6 dB on the master bus before limiting. Too hot = clipping. Too quiet = noise.',
+    seeAlso: ['Headroom', 'Clipping', 'Peak Meter', 'Limiting'],
     missionRefs: ['gain-staging', 'mixing-fundamentals'],
     audioExample: 'gain-staging-demo'
   },
@@ -260,6 +262,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Workflow',
     definition: 'Using one audio signal to control a processor acting on a different signal.',
     explanation: 'Classic: kick drum\'s sidechain input triggers compressor on bass track. Bass ducks every time kick hits. Creates pumping dance feel.',
+    seeAlso: ['Compressor', 'Dynamics', 'Routing'],
     missionRefs: ['sidechain-compression', 'advanced-routing'],
     audioExample: 'sidechain-demo'
   },
@@ -288,6 +291,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Workflow',
     definition: 'Determining the signal path: where audio goes after it plays.',
     explanation: 'Simple: Track → Master. Complex: Track A → Effect 1 → Effect 2 → Send A (Return Track with Reverb) → Master.',
+    seeAlso: ['Signal Flow', 'Sends', 'Return Track', 'Bus'],
     missionRefs: ['signal-flow', 'advanced-routing'],
     audioExample: 'routing-diagrams'
   },
@@ -299,6 +303,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Shortcuts',
     definition: 'Press Space to play/stop arrangement.',
     explanation: 'Space = Play. Space again = Stop. Ctrl+Space = Toggle from stop point (continues from where you stopped).',
+    seeAlso: ['Transport', 'Arrangement'],
     missionRefs: ['shortcuts-101']
   },
   {
@@ -307,6 +312,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Shortcuts',
     definition: 'Quick zoom in/out of arrangements and clips.',
     explanation: 'Ctrl+Mouse Wheel = zoom in/out. Or use keyboard: + and - keys.',
+    seeAlso: ['View', 'Arrangement', 'Clip Editor'],
     missionRefs: ['shortcuts-101']
   },
 ];
