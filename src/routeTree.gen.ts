@@ -9,38 +9,148 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorldsRouteImport } from './routes/worlds'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PlaygroundRouteImport } from './routes/playground'
+import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorldSlugRouteImport } from './routes/world.$slug'
+import { Route as MissionSlugRouteImport } from './routes/mission.$slug'
 
+const WorldsRoute = WorldsRouteImport.update({
+  id: '/worlds',
+  path: '/worlds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaygroundRoute = PlaygroundRouteImport.update({
+  id: '/playground',
+  path: '/playground',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GlossaryRoute = GlossaryRouteImport.update({
+  id: '/glossary',
+  path: '/glossary',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorldSlugRoute = WorldSlugRouteImport.update({
+  id: '/world/$slug',
+  path: '/world/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MissionSlugRoute = MissionSlugRouteImport.update({
+  id: '/mission/$slug',
+  path: '/mission/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/glossary': typeof GlossaryRoute
+  '/playground': typeof PlaygroundRoute
+  '/profile': typeof ProfileRoute
+  '/worlds': typeof WorldsRoute
+  '/mission/$slug': typeof MissionSlugRoute
+  '/world/$slug': typeof WorldSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/glossary': typeof GlossaryRoute
+  '/playground': typeof PlaygroundRoute
+  '/profile': typeof ProfileRoute
+  '/worlds': typeof WorldsRoute
+  '/mission/$slug': typeof MissionSlugRoute
+  '/world/$slug': typeof WorldSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/glossary': typeof GlossaryRoute
+  '/playground': typeof PlaygroundRoute
+  '/profile': typeof ProfileRoute
+  '/worlds': typeof WorldsRoute
+  '/mission/$slug': typeof MissionSlugRoute
+  '/world/$slug': typeof WorldSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/glossary'
+    | '/playground'
+    | '/profile'
+    | '/worlds'
+    | '/mission/$slug'
+    | '/world/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/glossary'
+    | '/playground'
+    | '/profile'
+    | '/worlds'
+    | '/mission/$slug'
+    | '/world/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/glossary'
+    | '/playground'
+    | '/profile'
+    | '/worlds'
+    | '/mission/$slug'
+    | '/world/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GlossaryRoute: typeof GlossaryRoute
+  PlaygroundRoute: typeof PlaygroundRoute
+  ProfileRoute: typeof ProfileRoute
+  WorldsRoute: typeof WorldsRoute
+  MissionSlugRoute: typeof MissionSlugRoute
+  WorldSlugRoute: typeof WorldSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/worlds': {
+      id: '/worlds'
+      path: '/worlds'
+      fullPath: '/worlds'
+      preLoaderRoute: typeof WorldsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playground': {
+      id: '/playground'
+      path: '/playground'
+      fullPath: '/playground'
+      preLoaderRoute: typeof PlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/glossary': {
+      id: '/glossary'
+      path: '/glossary'
+      fullPath: '/glossary'
+      preLoaderRoute: typeof GlossaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +158,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/world/$slug': {
+      id: '/world/$slug'
+      path: '/world/$slug'
+      fullPath: '/world/$slug'
+      preLoaderRoute: typeof WorldSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mission/$slug': {
+      id: '/mission/$slug'
+      path: '/mission/$slug'
+      fullPath: '/mission/$slug'
+      preLoaderRoute: typeof MissionSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GlossaryRoute: GlossaryRoute,
+  PlaygroundRoute: PlaygroundRoute,
+  ProfileRoute: ProfileRoute,
+  WorldsRoute: WorldsRoute,
+  MissionSlugRoute: MissionSlugRoute,
+  WorldSlugRoute: WorldSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
