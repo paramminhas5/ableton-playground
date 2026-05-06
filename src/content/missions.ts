@@ -1014,3 +1014,8 @@ export const nextMission = (slug: string) => {
   const i = MISSIONS.findIndex((m) => m.slug === slug);
   return i >= 0 && i < MISSIONS.length - 1 ? MISSIONS[i + 1] : null;
 };
+
+export const prevMission = (slug: string) => {
+  const i = MISSIONS.findIndex((m) => m.slug === slug);
+  return i > 0 ? MISSIONS[i - 1] : null;
+};
