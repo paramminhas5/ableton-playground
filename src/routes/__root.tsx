@@ -67,14 +67,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "ABLETON.SCHOOL — Learn Ableton Live 12, Brutally Interactive" },
+      { name: "description", content: "A gamified, interactive learning system for Ableton Live 12. Missions, simulators, XP. Cover the entire manual." },
+      { name: "author", content: "ABLETON.SCHOOL" },
+      { property: "og:title", content: "ABLETON.SCHOOL" },
+      { property: "og:description", content: "Learn Ableton Live 12 through interactive missions and simulators." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
