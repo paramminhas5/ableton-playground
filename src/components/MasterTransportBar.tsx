@@ -1,9 +1,8 @@
 // Master Transport Bar - sticky footer with global play/stop/BPM control
-// Place this in: src/components/MasterTransportBar.tsx
-
 import { useTransport } from '@/lib/transport-context';
+import type { SampleName } from '@/lib/audio';
 
-const SAMPLES: { id: typeof useTransport extends () => infer T ? T extends { sample: infer S } ? S : never : never; label: string }[] = [
+const SAMPLES: { id: SampleName; label: string }[] = [
   { id: 'drum-loop', label: 'DRUMS' },
   { id: 'bass-loop', label: 'BASS' },
   { id: 'chord-pad', label: 'CHORDS' },
