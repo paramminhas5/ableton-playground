@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { deviceBySlug, DEVICES } from "@/content/devices";
 import { DeviceLab } from "@/components/DeviceLab";
 
-export const Route = createFileRoute("/devices/$slug")({
+export const Route = createFileRoute("/device/$slug")({
   head: ({ params }) => {
     const d = deviceBySlug(params.slug);
     return { meta: [
